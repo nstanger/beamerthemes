@@ -19,7 +19,7 @@
 %
 % Load in the Otago logo graphic.
 %
-\pgfdeclareimage[width=0.64cm,height=1.05cm]{oulogo}{OU-Logo-CMYK}
+\pgfdeclareimage[width=0.64cm,height=1.05cm]{oulogo}{OU-Logo-Colour}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,7 +227,7 @@
   \vbox{%
     \colouredline{beamerstructure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\raisebox{3.5pt}{\insertnavigation{0.9\paperwidth}}\hskip-1.3cm}%
     \goldredline{\mbox{}}%
-    \vskip-0.7cm\hbox{\hskip-0.7cm\pgfuseimage{oulogo}}\vskip-0.15cm%
+    \vskip-0.7cm\hbox{\hskip-0.7cm\rlap{\color{white}\rule{0.64cm}{1.05cm}}\pgfuseimage{oulogo}}\vskip-0.15cm%
   }}
 
 
