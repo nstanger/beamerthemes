@@ -1,12 +1,18 @@
 \ProvidesPackage{beamerthemeotago}[2004/03/03 ver 2.10]
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Copyright 2004 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>.
 % Based on beamerthemebars.sty copyright 2003 Till Tantau <tantau@cs.tu-berlin.de>.
+%
+% $Id$
 %
 % This program can be redistributed and/or modified under the terms
 % of the LaTeX Project Public License Distributed from CTAN
 % archives in directory macros/latex/base/lppl.txt.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % Load in the Otago logo graphic.
@@ -41,6 +47,13 @@
 % Used to hold the current chapter number (which usually won't change).
 \newcounter{chapter}
 \def\insertchapternumber{\arabic{chapter}}
+
+
+% Create a frame title that's split over two lines, with the first line
+% normal size and the second line small text (used for, e.g., references).
+\newcommand{\frametitlesub}[2]{%
+	\frametitle{\parbox[t]{\textwidth}{#1 \\ \normalfont\tiny #2}}%
+}
 
 
 % We want to use the \part macro to break up the document into parts,
