@@ -1,4 +1,4 @@
-\ProvidesPackage{beamerthemeotago}[2004/01/13 ver 0.2]
+\ProvidesPackage{beamerthemeotago}[2004/03/03 ver 0.3]
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 
 % Copyright 2004 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>.
@@ -17,16 +17,18 @@
 \definecolor{oublue}{cmyk}{1,0.85,0.1,0}		% RGB 0, 15, 90
 \definecolor{oured}{cmyk}{0,0.9,0.85,0}			% RGB 100, 10, 15
 \definecolor{ougold}{cmyk}{0,0.25,1,0}			% RGB 100, 75, 0
-\definecolor{ougoldshaded}{cmyk}{0,0.1,0.4,0}
-\definecolor{ougoldmedium}{cmyk}{0,0.175,0.7,0}
+% \definecolor{ougoldshaded}{cmyk}{0,0.1,0.4,0}
+% \definecolor{ougoldmedium}{cmyk}{0,0.175,0.7,0}
 
 % Set beamer to use Otago colours where appropriate.
 \definecolor{structure}{cmyk}{1,0.85,0.1,0}
-\definecolor{structureshaded}{cmyk}{0.4,0.34,0.04,0}	% RGB 60, 66, 96
-\definecolor{structuremedium}{cmyk}{0.7,0.595,0.07,0}	% RGB 30, 40.5, 93
 \definecolor{alert}{cmyk}{0,0.9,0.85,0}
 
+% Other miscellaneous colours.
+\definecolor{lavender}{cmyk}{0.48,0.61,0.35,0}
 
+
+% Set up frame footer components.
 \def\insertfooterleft{}
 \def\insertfootercenter{}
 \def\insertfooterright{}
@@ -34,6 +36,31 @@
 \newcommand{\footerleft}[1]{\renewcommand{\insertfooterleft}{#1}}
 \newcommand{\footercenter}[1]{\renewcommand{\insertfootercenter}{#1}}
 \newcommand{\footerright}[1]{\renewcommand{\insertfooterright}{#1}}
+
+
+% Used to hold the current chapter number (which usually won't change).
+\newcounter{chapter}
+\def\insertchapternumber{\arabic{chapter}}
+
+
+% We want to use the \part macro to break up the document into parts,
+% but without resetting the section counters and navigation bars. Some
+% of this is keyed off the use of the part counter, so the easiest way
+% to avoid it is to create a new part counter and redefine the \part
+% macro to use that. (This may be an argument for changing the way
+% lecture slides are structured, but later...)
+\newcounter{mypart}
+
+% Argument 1 (optional): the subtitle of the part.
+% Argument 2 (mandatory): the main title of the part.
+\renewcommand{\part}[2][]{%
+  \refstepcounter{mypart}%
+  \def\insertpart{#2}%
+  \def\insertshortpart{#1}%
+}
+\def\insertpart{}
+\def\insertshortpart{}
+\def\insertpartnumber{\arabic{mypart}}
 
 
                                 % Title page  
@@ -51,13 +78,22 @@
   \vfill
   }
 
+                                % Part page
+\usepartpagetemplate{%
+  \begin{center}%
+    \vfill\Large\structure{\textbf{\insertpart}}\par%
+    \vfill\normalsize\insertchapternumber.\insertpartnumber\par%
+    \insertshortpart\par\vfill%
+  \end{center}%
+}
+
                                 % Frametitles
 \useframetitletemplate{%
-  \vskip8pt
+  \vskip8pt%
   {\leftskip-\beamer@leftmargin\advance\leftskip by0.3cm%
-   \rightskip-\beamer@rightmargin plus1fil\advance\rightskip by0.3cm\leavevmode
-    \color{structure}
-    \Large\textbf{\insertframetitle}\par}
+   \rightskip-\beamer@rightmargin plus1fil\advance\rightskip by0.3cm\leavevmode%
+    \color{structure}%
+    \Large\textbf{\insertframetitle}\par}%
   }
 
                                 % Sections in headline
@@ -70,11 +106,11 @@
 \beamertemplatecircleminiframeinverted
 
                                 % Entries in table of contents
-\usetemplatetocsection[50!averagebackgroundcolor]
+\usetemplatetocsection[40!averagebackgroundcolor]
 {{\large\color{structure}\inserttocsection}}
 
                                 % Entries in table of contents
-\usetemplatetocsubsection[50!averagebackgroundcolor]
+\usetemplatetocsubsection[40!averagebackgroundcolor]
 {\leavevmode\leftskip=1.5em\color{black}\inserttocsubsection\par}
 
 
@@ -97,7 +133,7 @@
 \newbox\headbox
 \useheadtemplate{%
   \vbox{%
-    \colouredline{structure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\insertnavigation{0.9\paperwidth}\hskip-1.3cm}%
+    \colouredline{structure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\raisebox{3.5pt}{\insertnavigation{0.9\paperwidth}}\hskip-1.3cm}%
     \goldredline{\mbox{}}%
     \vskip-0.7cm\hbox{\hskip-0.7cm\pgfuseimage{oulogo}}\vskip-0.15cm%
   }}
@@ -117,5 +153,7 @@
 \useexampleblocktemplate{\medskip\begingroup{\color{structure!50!green}\large{\insertblockname}}\par%
 \color{black!50!green}}{\endgroup\medskip}
 
+                                % Highlighting
+\usealerttemplate{{\color{alert}\insertalert}}
 
 
