@@ -56,6 +56,18 @@
 }
 
 
+% Highlight a piece of text by using the alert colour and also drawing a
+% frame around it. We need to use a strut in the "unhighlighted" version
+% to ensure that it's the same height as the "highlighted" version, hence
+% \boxheight. Note that the frame will always be drawn in the handout, but
+% the alert colour won't.
+\newlength{\boxheight}
+\newcommand<>{\BoxHighlight}[1]{%
+	\settoheight{\boxheight}{\fbox{#1}}%
+	\alt#2{\alert<handout:0>{\framebox[\width]{#1}}}{\rule{0pt}{\boxheight}#1}%
+}
+
+
 % We want to use the \part macro to break up the document into parts,
 % but without resetting the section counters and navigation bars. Some
 % of this is keyed off the use of the part counter, so the easiest way
