@@ -15,10 +15,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Load in the Otago logo graphic.
+%
 \pgfdeclareimage[width=0.64cm,height=1.05cm]{oulogo}{OU-Logo-CMYK}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Set up Otago colours.
 \definecolor{oublue}{cmyk}{1,0.85,0.1,0}		% RGB 0, 15, 90
 \definecolor{oured}{cmyk}{0,0.9,0.85,0}			% RGB 100, 10, 15
@@ -30,11 +35,18 @@
 \definecolor{beamerstructure}{cmyk}{1,0.85,0.1,0}
 \definecolor{beameralert}{cmyk}{0,0.9,0.85,0}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Other miscellaneous colours.
+%
 \definecolor{lavender}{cmyk}{0.48,0.61,0.35,0}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Set up frame footer components.
+%
 \def\insertfooterleft{}
 \def\insertfootercenter{}
 \def\insertfooterright{}
@@ -44,36 +56,67 @@
 \newcommand{\footerright}[1]{\renewcommand{\insertfooterright}{#1}}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Used to hold the current chapter number (which usually won't change).
+%
 \newcounter{chapter}
 \def\insertchapternumber{\arabic{chapter}}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Create a frame title that's split over two lines, with the first line
 % normal size and the second line small text (used for, e.g., references).
+%
 \newcommand{\frametitlesub}[2]{%
 	\frametitle{\parbox[t]{\textwidth}{#1 \\ \normalfont\tiny #2}}%
 }
 
 
-% Highlight a piece of text by using the alert colour and also drawing a
-% frame around it. We need to use a strut in the "unhighlighted" version
-% to ensure that it's the same height as the "highlighted" version, hence
-% \boxheight. Note that the frame will always be drawn in the handout, but
-% the alert colour won't.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Highlight a piece of text using the alert colour and also by drawing a
+% frame around it. We need to ensure that the "unhighlighted" version is
+% drawn in a box of the same height as the "highlighted" version. Thus the
+% use of \boxheight, \boxdepth and \boxtotalheight to control things.
+%
+% We draw the "unhighlighted" version as is. We draw the "highlighted"
+% version in a box of the same height by using \raisebox to make TeX think
+% that the framed text is actually the same height as the original text
+% (we don't raise the text at all).
+%
+% Since different texts will have different ascenders and descenders, we
+% insert a strut to ensure that all the frames come out with the same total
+% height.
+%
+% Note that the frame will always be drawn in the handout, but the alert
+% colour won't.
+%
 \newlength{\boxheight}
-\newcommand<>{\BoxHighlight}[1]{%
-	\settoheight{\boxheight}{\fbox{#1}}%
-	\alt#2{\alert<handout:0>{\framebox[\width]{#1}}}{\rule{0pt}{\boxheight}#1}%
+\settoheight{\boxheight}{Abdfghjklpqty()}
+\newlength{\boxdepth}
+\settodepth{\boxdepth}{Abdfghjklpqty()}
+\newlength{\boxtotalheight}
+\setlength{\boxtotalheight}{\boxheight}
+\addtolength{\boxtotalheight}{\boxdepth}
+
+\newcommand<>{\BoxHighlight}[2][beameralert]{%
+	\setlength{\fboxsep}{1pt}%
+	\alt#3{\textcolor<handout:0>{#1}{\raisebox{0pt}[\boxheight][\boxdepth]{\framebox[\width]{\rule[-\boxdepth]{0pt}{\boxtotalheight}#2}}}}{#2}%
+% 	\alt#3{\textcolor<handout:0>{#1}{\framebox[\width]{#2}}}{#2}%
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % We want to use the \part macro to break up the document into parts,
 % but without resetting the section counters and navigation bars. Some
 % of this is keyed off the use of the part counter, so the easiest way
 % to avoid it is to create a new part counter and redefine the \part
 % macro to use that. (This may be an argument for changing the way
 % lecture slides are structured, but later...)
+%
 \newcounter{mypart}
 
 % Argument 1 (optional): the subtitle of the part.
@@ -88,7 +131,10 @@
 \def\insertpartnumber{\arabic{mypart}}
 
 
-                                % Title page  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Title page  
+%
 \usetitlepagetemplate{
   \vbox{}
   \vfill
@@ -103,7 +149,11 @@
   \vfill
   }
 
-                                % Part page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Part page
+%
 \usepartpagetemplate{%
   \begin{center}%
     \vfill\Large\structure{\textbf{\insertpart}}\par%
@@ -112,7 +162,11 @@
   \end{center}%
 }
 
-                                % Frametitles
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Frametitles
+%
 \useframetitletemplate{%
   \vskip8pt%
   {\leftskip-\beamer@leftmargin\advance\leftskip by0.3cm%
@@ -121,26 +175,35 @@
     \Large\textbf{\insertframetitle}\par}%
   }
 
-                                % Sections in headline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Sections in headline
 % OU gold text on OU blue background.
+%
 \usesectionheadtemplate%
 {\color{ougold}\tiny\fbox{\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}%
 {\color{beamerstructure}\tiny\fbox{\color{ougold}\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}
 
-
 \beamertemplatecircleminiframeinverted
 
-                                % Entries in table of contents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Entries in table of contents
+%
 \usetemplatetocsection[40!averagebackgroundcolor]
 {{\large\color{beamerstructure}\inserttocsection}}
 
-                                % Entries in table of contents
 \usetemplatetocsubsection[40!averagebackgroundcolor]
 {\leavevmode\leftskip=1.5em\color{black}\inserttocsubsection\par}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Draw a gold bar 85% the width of the page, followed by a red bar
 % across the remaining 15% (cf. typical Otago web page format).
+%
 \newbox\linebox
 \def\goldredline#1{%
   \hbox{%
@@ -154,7 +217,12 @@
     \box\linebox%
   }%
 }
-                                % Head
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Head
+%
 \newbox\headbox
 \useheadtemplate{%
   \vbox{%
@@ -163,22 +231,38 @@
     \vskip-0.7cm\hbox{\hskip-0.7cm\pgfuseimage{oulogo}}\vskip-0.15cm%
   }}
 
-                                % Footline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footline
+%
 \usefoottemplate{%
   \vbox{%
   	\goldredline{\color{black}\makebox[0.15\paperwidth][l]{\insertfooterleft}\hfill{}\insertfootercenter\hfill{}\makebox[0.15\paperwidth][r]{\insertfooterright}}%
     }}
 
-                                % Background
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Background
+%
 \usebackgroundtemplate{}
 
-                                % Blocks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Blocks
+%
 \useblocktemplate{\medskip{\color{beamerstructure}\large{\insertblockname}}\par}{\medskip}
 \usealertblocktemplate{\medskip{\alert{\large{\insertblockname}}}\par}{\medskip}
 \useexampleblocktemplate{\medskip\begingroup{\color{beamerstructure!50!green}\large{\insertblockname}}\par%
 \color{black!50!green}}{\endgroup\medskip}
 
-                                % Highlighting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Highlighting
+%
 \usealerttemplate{\color{beameralert}}{}
 
 
