@@ -1,0 +1,114 @@
+\ProvidesPackage{beamerouterthemeOtago}[2005/02/07 ver 3.01.001]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Copyright 2005 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\mode<presentation>
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Right sidebar (same as default, but without logo).
+%
+\defbeamertemplate*{sidebar right}{Otago theme}
+{
+  \vfill%
+  \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+  \vskip2pt%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Otago logo. Fill rectangle with white first to stop the background from
+% bleeding through.
+%
+\pgfdeclareimage[width=0.64cm,height=1.05cm]{oulogo}{OU-Logo-Colour}
+\logo{%
+  \begin{pgfpicture}{0cm}{0cm}{0.64cm}{1.05cm}%
+    \color{white}\pgfrect[fill]{\pgfxy(0,0)}{\pgfxy(0.64,1.05)}%
+    \pgfputat{\pgfxy(0,0)}{\pgfbox[left,bottom]{\pgfuseimage{oulogo}}}%
+  \end{pgfpicture}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Headline.
+%
+% OU blue bar across the top, followed by OU gold bar 85% the width of the
+% page, followed by OU red bar across the remaining 15% (cf. old Otago web
+% page format). Otago logo at top left, section navigation in the blue
+% bar.
+%
+\defbeamertemplate*{headline}{Otago theme}%
+{%
+  \leavevmode%
+  \begin{beamercolorbox}[ht=3.2mm,dp=1.6mm]{section in head/foot}%
+    \insertsectionnavigationhorizontal{0.9\paperwidth}{\hspace{0.1\paperwidth}}{}%
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[wd=0.85\paperwidth,ht=2.4mm,dp=1.2mm,colsep=1pt]{title in head/foot}%
+    \hskip3mm\raisebox{-0.525cm}[0cm][0cm]{\insertlogo}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=0.15\paperwidth,ht=2.4mm,dp=1.2mm,colsep=1pt]{page number in head/foot}%
+  \end{beamercolorbox}%
+  \vskip3mm%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Sections in headline. OU gold text on OU blue background. Current section
+% is highlighted with a box. We draw the box regardless to ensure the line
+% height stays constant.
+%
+\defbeamertemplate*{section in head/foot}{Otago theme}
+{\color{fg}\fbox{\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\insertsectionhead}}}
+
+\defbeamertemplate*{section in head/foot shaded}{Otago theme}[1][50]
+{\color{bg}\fbox{\color{fg}\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\insertsectionhead}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footline.
+%
+% OU gold bar 85% the width of the page, followed by OU red bar across the
+% remaining 15% (cf. old Otago web page format). Date at left, author in
+% centre, frame number at right.
+%
+\defbeamertemplate*{footline}{Otago theme}%
+{%
+  \leavevmode%
+  \begin{beamercolorbox}[wd=0.15\paperwidth,left,leftskip=2mm,ht=2.4mm,dp=1.2mm]{date in head/foot}%
+    \usebeamertemplate*{date in head/foot}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=0.7\paperwidth,center,ht=2.4mm,dp=1.2mm]{title in head/foot}%
+    \usebeamertemplate*{title in head/foot}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=0.15\paperwidth,right,rightskip=2mm,ht=2.4mm,dp=1.2mm]{page number in head/foot}%
+    \usebeamertemplate*{page number in head/foot}%
+  \end{beamercolorbox}%
+  \vskip0pt%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footer elements.
+%
+\defbeamertemplate*{date in head/foot}{Otago theme}{\insertdate}
+\defbeamertemplate*{title in head/foot}{Otago theme}{\inserttitle}
+\defbeamertemplate*{page number in head/foot}{Otago theme}{\insertframenumber}
+
+
+\mode
+<all>

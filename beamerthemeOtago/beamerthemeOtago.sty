@@ -1,59 +1,17 @@
-\ProvidesPackage{beamerthemeotago}[2004/03/03 ver 2.10]
-\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{beamerthemeOtago}[2005/02/07 ver 3.01.001]
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Copyright 2004 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>.
-% Based on beamerthemebars.sty copyright 2003 Till Tantau <tantau@cs.tu-berlin.de>.
-%
-% $Id$
+% Copyright 2005 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>
 %
 % This program can be redistributed and/or modified under the terms
-% of the LaTeX Project Public License Distributed from CTAN
-% archives in directory macros/latex/base/lppl.txt.
+% of the GNU Public License, version 2.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Load in the Otago logo graphic.
-%
-\pgfdeclareimage[width=0.64cm,height=1.05cm]{oulogo}{OU-Logo-Colour}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Set up Otago colours.
-\definecolor{oublue}{cmyk}{1,0.85,0.1,0}		% RGB 0, 15, 90
-\definecolor{oured}{cmyk}{0,0.9,0.85,0}			% RGB 100, 10, 15
-\definecolor{ougold}{cmyk}{0,0.25,1,0}			% RGB 100, 75, 0
-% \definecolor{ougoldshaded}{cmyk}{0,0.1,0.4,0}
-% \definecolor{ougoldmedium}{cmyk}{0,0.175,0.7,0}
-
-% Set beamer to use Otago colours where appropriate.
-\definecolor{beamerstructure}{cmyk}{1,0.85,0.1,0}
-\definecolor{beameralert}{cmyk}{0,0.9,0.85,0}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Other miscellaneous colours.
-%
-\definecolor{lavender}{cmyk}{0.48,0.61,0.35,0}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Set up frame footer components.
-%
-\def\insertfooterleft{}
-\def\insertfootercenter{}
-\def\insertfooterright{}
-
-\newcommand{\footerleft}[1]{\renewcommand{\insertfooterleft}{#1}}
-\newcommand{\footercenter}[1]{\renewcommand{\insertfootercenter}{#1}}
-\newcommand{\footerright}[1]{\renewcommand{\insertfooterright}{#1}}
+\mode<presentation>
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,17 +19,7 @@
 % Used to hold the current chapter number (which usually won't change).
 %
 \newcounter{chapter}
-\def\insertchapternumber{\arabic{chapter}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Create a frame title that's split over two lines, with the first line
-% normal size and the second line small text (used for, e.g., references).
-%
-\newcommand{\frametitlesub}[2]{%
-	\frametitle{\parbox[t]{\textwidth}{#1 \\ \normalfont\tiny #2}}%
-}
+\def\insertchapternumber{\usebeamercolor{chapter number}\usebeamerfont{chaper number}\arabic{chapter}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,8 +50,8 @@
 \addtolength{\boxtotalheight}{\boxdepth}
 
 \newcommand<>{\BoxHighlight}[2][beameralert]{%
-	\setlength{\fboxsep}{1pt}%
-	\alt#3{\textcolor<handout:0>{#1}{\raisebox{0pt}[\boxheight][\boxdepth]{\framebox[\width]{\rule[-\boxdepth]{0pt}{\boxtotalheight}#2}}}}{#2}%
+  \setlength{\fboxsep}{1pt}%
+  \alt#3{\textcolor<handout:0>{#1}{\raisebox{0pt}[\boxheight][\boxdepth]{\framebox[\width]{\rule[-\boxdepth]{0pt}{\boxtotalheight}#2}}}}{#2}%
 }
 
 
@@ -122,146 +70,23 @@
 % Argument 2 (mandatory): the main title of the part.
 \renewcommand{\part}[2][]{%
   \refstepcounter{mypart}%
-  \def\insertpart{#2}%
-  \def\insertshortpart{#1}%
+  \def\insertpart{\usebeamercolor{part name}\usebeamerfont{part name}#2}%
+  \def\insertshortpart{\usebeamercolor{short part name}\usebeamerfont{short part name}#1}%
 }
-\def\insertpart{}
-\def\insertshortpart{}
-\def\insertpartnumber{\arabic{mypart}}
+\def\insertpart{\usebeamercolor{part name}\usebeamerfont{part name}}
+\def\insertshortpart{\usebeamercolor{short part name}\usebeamerfont{short part name}}
+\def\insertpartnumber{\usebeamercolor{part number}\usebeamerfont{part number}\arabic{mypart}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Title page  
+% Load the various related themes.
 %
-\usetitlepagetemplate{
-  \vbox{}
-  \vfill
-  \begin{centering}
-    \Large\structure{\inserttitle}
-    \vskip1em\par
-    \normalsize\insertauthor\vskip1em\par
-    {\scriptsize\insertinstitute\par}\par\vskip1em
-    \insertdate\par\vskip1.5em
-    \inserttitlegraphic
-  \end{centering}
-  \vfill
-  }
+\useoutertheme{Otago}
+\useinnertheme{Otago}
+\usecolortheme{Otago}
+\usefonttheme{Otago}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Part page
-%
-\usepartpagetemplate{%
-  \begin{center}%
-    \vfill\Large\structure{\textbf{\insertpart}}\par%
-    \vfill\normalsize\insertchapternumber.\insertpartnumber\par%
-    \insertshortpart\par\vfill%
-  \end{center}%
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Frametitles
-%
-\useframetitletemplate{%
-  \vskip8pt%
-  {\leftskip-\beamer@leftmargin\advance\leftskip by0.3cm%
-   \rightskip-\beamer@rightmargin plus1fil\advance\rightskip by0.3cm\leavevmode%
-    \color{beamerstructure}%
-    \Large\textbf{\insertframetitle}\par}%
-  }
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Sections in headline
-% OU gold text on OU blue background.
-%
-\usesectionheadtemplate%
-{\color{ougold}\tiny\fbox{\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}%
-{\color{beamerstructure}\tiny\fbox{\color{ougold}\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}
-
-\beamertemplatecircleminiframeinverted
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Entries in table of contents
-%
-\usetemplatetocsection[40!averagebackgroundcolor]
-{{\large\color{beamerstructure}\inserttocsection}}
-
-\usetemplatetocsubsection[40!averagebackgroundcolor]
-{\leavevmode\leftskip=1.5em\color{black}\inserttocsubsection\par}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Draw a gold bar 85% the width of the page, followed by a red bar
-% across the remaining 15% (cf. typical Otago web page format).
-%
-\newbox\linebox
-\def\goldredline#1{%
-  \hbox{%
-    \setbox\linebox=\hbox to\textwidth{\hskip-0.7cm\tiny{#1}\hskip-0.7cm}%
-    \ht\linebox=7pt%
-    \dp\linebox=0pt%
-    \setbox\linebox=\vbox{\box\linebox\vskip3pt}%
-    {\color{ougold}\hskip-1cm\vrule width 0.85\paperwidth height 0.35cm%
-      \color{oured}\vrule width 0.15\paperwidth height 0.35cm%
-      \hskip-\paperwidth\hskip1cm}%
-    \box\linebox%
-  }%
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Head
-%
-\newbox\headbox
-\useheadtemplate{%
-  \vbox{%
-    \colouredline{beamerstructure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\raisebox{3.5pt}{\insertnavigation{0.9\paperwidth}}\hskip-1.3cm}%
-    \goldredline{\mbox{}}%
-    \vskip-0.7cm\hbox{\hskip-0.7cm\rlap{\color{white}\rule{0.64cm}{1.05cm}}\pgfuseimage{oulogo}}\vskip-0.15cm%
-  }}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Footline
-%
-\usefoottemplate{%
-  \vbox{%
-  	\goldredline{\color{black}\makebox[0.15\paperwidth][l]{\insertfooterleft}\hfill{}\insertfootercenter\hfill{}\makebox[0.15\paperwidth][r]{\insertfooterright}}%
-    }}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Background
-%
-\usebackgroundtemplate{}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Blocks
-%
-\useblocktemplate{\medskip{\color{beamerstructure}\large{\insertblockname}}\par}{\medskip}
-\usealertblocktemplate{\medskip{\alert{\large{\insertblockname}}}\par}{\medskip}
-\useexampleblocktemplate{\medskip\begingroup{\color{beamerstructure!50!green}\large{\insertblockname}}\par%
-\color{black!50!green}}{\endgroup\medskip}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Highlighting
-%
-\usealerttemplate{\color{beameralert}}{}
-
-
+\mode
+<all>
