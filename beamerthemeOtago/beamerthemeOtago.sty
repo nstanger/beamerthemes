@@ -21,8 +21,8 @@
 % \definecolor{ougoldmedium}{cmyk}{0,0.175,0.7,0}
 
 % Set beamer to use Otago colours where appropriate.
-\definecolor{structure}{cmyk}{1,0.85,0.1,0}
-\definecolor{alert}{cmyk}{0,0.9,0.85,0}
+\definecolor{beamerstructure}{cmyk}{1,0.85,0.1,0}
+\definecolor{beameralert}{cmyk}{0,0.9,0.85,0}
 
 % Other miscellaneous colours.
 \definecolor{lavender}{cmyk}{0.48,0.61,0.35,0}
@@ -92,7 +92,7 @@
   \vskip8pt%
   {\leftskip-\beamer@leftmargin\advance\leftskip by0.3cm%
    \rightskip-\beamer@rightmargin plus1fil\advance\rightskip by0.3cm\leavevmode%
-    \color{structure}%
+    \color{beamerstructure}%
     \Large\textbf{\insertframetitle}\par}%
   }
 
@@ -100,14 +100,14 @@
 % OU gold text on OU blue background.
 \usesectionheadtemplate%
 {\color{ougold}\tiny\fbox{\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}%
-{\color{structure}\tiny\fbox{\color{ougold}\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}
+{\color{beamerstructure}\tiny\fbox{\color{ougold}\rule{0pt}{0.5\baselineskip}\raisebox{0pt}[0pt][0pt]{\textbf{\insertsectionhead}}}}
 
 
 \beamertemplatecircleminiframeinverted
 
                                 % Entries in table of contents
 \usetemplatetocsection[40!averagebackgroundcolor]
-{{\large\color{structure}\inserttocsection}}
+{{\large\color{beamerstructure}\inserttocsection}}
 
                                 % Entries in table of contents
 \usetemplatetocsubsection[40!averagebackgroundcolor]
@@ -133,7 +133,7 @@
 \newbox\headbox
 \useheadtemplate{%
   \vbox{%
-    \colouredline{structure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\raisebox{3.5pt}{\insertnavigation{0.9\paperwidth}}\hskip-1.3cm}%
+    \colouredline{beamerstructure}{\hskip-0.3cm\rule{0pt}{0.35cm}\hskip1.1cm\raisebox{3.5pt}{\insertnavigation{0.9\paperwidth}}\hskip-1.3cm}%
     \goldredline{\mbox{}}%
     \vskip-0.7cm\hbox{\hskip-0.7cm\pgfuseimage{oulogo}}\vskip-0.15cm%
   }}
@@ -148,12 +148,12 @@
 \usebackgroundtemplate{}
 
                                 % Blocks
-\useblocktemplate{\medskip{\color{structure}\large{\insertblockname}}\par}{\medskip}
+\useblocktemplate{\medskip{\color{beamerstructure}\large{\insertblockname}}\par}{\medskip}
 \usealertblocktemplate{\medskip{\alert{\large{\insertblockname}}}\par}{\medskip}
-\useexampleblocktemplate{\medskip\begingroup{\color{structure!50!green}\large{\insertblockname}}\par%
+\useexampleblocktemplate{\medskip\begingroup{\color{beamerstructure!50!green}\large{\insertblockname}}\par%
 \color{black!50!green}}{\endgroup\medskip}
 
                                 % Highlighting
-\usealerttemplate{\color{oured}}{}
+\usealerttemplate{\color{beameralert}}{}
 
 
