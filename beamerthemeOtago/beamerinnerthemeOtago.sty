@@ -1,4 +1,4 @@
-\ProvidesPackage{beamerinnerthemeOtago}[2005/02/07 ver 3.01.001]
+\ProvidesPackage{beamerinnerthemeOtago}[2005/02/07 ver 3.01.002]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -34,6 +34,47 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+% Used to hold the current chapter number (which usually won't change).
+%
+\newcounter{chapter}
+\def\insertchapternumber{\usebeamercolor[fg]{chapter number}\usebeamerfont{chaper number}\arabic{chapter}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Highlight a piece of text using the alert colour and also by drawing a
+% frame around it. We need to ensure that the "unhighlighted" version is
+% drawn in a box of the same height as the "highlighted" version. Thus the
+% use of \boxheight, \boxdepth and \boxtotalheight to control things.
+%
+% We draw the "unhighlighted" version as is. We draw the "highlighted"
+% version in a box of the same height by using \raisebox to make TeX think
+% that the framed text is actually the same height as the original text
+% (we don't raise the text at all).
+%
+% Since different texts will have different ascenders and descenders, we
+% insert a strut to ensure that all the frames come out with the same total
+% height.
+%
+% Note that the frame will always be drawn in the handout, but the alert
+% colour won't.
+%
+\newlength{\boxheight}
+\settoheight{\boxheight}{Abdfghjklpqty()}
+\newlength{\boxdepth}
+\settodepth{\boxdepth}{Abdfghjklpqty()}
+\newlength{\boxtotalheight}
+\setlength{\boxtotalheight}{\boxheight}
+\addtolength{\boxtotalheight}{\boxdepth}
+
+\newcommand<>{\BoxHighlight}[2][alerted text]{%
+  \setlength{\fboxsep}{1pt}%
+  \alt#3{\raisebox{0pt}[\boxheight][\boxdepth]{\usebeamercolor[fg]{#1}\framebox[\width]{\rule[-\boxdepth]{0pt}{\boxtotalheight}#2}}}{#2}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Title page  
 %
 \defbeamertemplate*{title page}{Otago theme}%
@@ -56,6 +97,29 @@
 \defbeamertemplate*{author}{Otago theme}{\insertauthor}
 \defbeamertemplate*{institute}{Otago theme}{\insertinstitute}
 \defbeamertemplate*{date}{Otago theme}{\insertdate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% We want to use the \part macro to break up the document into parts,
+% but without resetting the section counters and navigation bars. Some
+% of this is keyed off the use of the part counter, so the easiest way
+% to avoid it is to create a new part counter and redefine the \part
+% macro to use that. (This may be an argument for changing the way
+% lecture slides are structured, but later...)
+%
+\newcounter{mypart}
+
+% Argument 1 (optional): the subtitle of the part.
+% Argument 2 (mandatory): the main title of the part.
+\renewcommand{\part}[2][]{%
+  \refstepcounter{mypart}%
+  \def\insertpart{\usebeamercolor[fg]{part name}\usebeamerfont{part name}#2}%
+  \def\insertshortpart{\usebeamercolor[fg]{short part name}\usebeamerfont{short part name}#1}%
+}
+\def\insertpart{\usebeamercolor[fg]{part name}\usebeamerfont{part name}}
+\def\insertshortpart{\usebeamercolor[fg]{short part name}\usebeamerfont{short part name}}
+\def\insertpartnumber{\usebeamercolor[fg]{part number}\usebeamerfont{part number}\arabic{mypart}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
