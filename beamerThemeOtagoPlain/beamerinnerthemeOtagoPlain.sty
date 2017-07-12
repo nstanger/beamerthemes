@@ -1,0 +1,473 @@
+\ProvidesPackage{beamerinnerthemeOtagoPlain}[2005/02/07 ver 3.01.002]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Copyright 2005 by Nigel Stanger <nstanger@infoscience.otago.ac.nz>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\mode<presentation>
+
+
+% Some images:
+
+% \pgfdeclareimage[width=14pt,height=12pt]{beamericonbook}{beamericonbook}
+% \pgfdeclareimage[width=14pt,height=12pt]{beamericonbookshaded}{beamericonbook.20}
+% \pgfaliasimage{beamericonbook.!20opaque}{beamericonbookshaded}
+% \pgfaliasimage{beamericonbook.!15opaque}{beamericonbookshaded}
+% \pgfaliasimage{beamericonbook.!10opaque}{beamericonbookshaded}
+% \pgfaliasimage{beamericonbook.!5opaque}{beamericonbookshaded}
+% \pgfaliasimage{beamericonbook.!2opaque}{beamericonbookshaded}
+% \pgfdeclareimage[width=11pt,height=14pt]{beamericonarticle}{beamericonarticle}
+% \pgfdeclareimage[width=11pt,height=14pt]{beamericonarticleshaded}{beamericonarticle.20}
+% \pgfaliasimage{beamericonarticle.!20opaque}{beamericonarticleshaded}
+% \pgfaliasimage{beamericonarticle.!15opaque}{beamericonarticleshaded}
+% \pgfaliasimage{beamericonarticle.!10opaque}{beamericonarticleshaded}
+% \pgfaliasimage{beamericonarticle.!5opaque}{beamericonarticleshaded}
+% \pgfaliasimage{beamericonarticle.!2opaque}{beamericonarticleshaded}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Used to hold the current chapter number (which usually won't change).
+%
+\newcounter{chapter}
+\def\insertchapternumber{\usebeamercolor[fg]{chapter number}\usebeamerfont{chaper number}\arabic{chapter}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Highlight a piece of text using the alert colour and also by drawing a
+% frame around it. We need to ensure that the "unhighlighted" version is
+% drawn in a box of the same height as the "highlighted" version. Thus the
+% use of \boxheight, \boxdepth and \boxtotalheight to control things.
+%
+% We draw the "unhighlighted" version as is. We draw the "highlighted"
+% version in a box of the same height by using \raisebox to make TeX think
+% that the framed text is actually the same height as the original text
+% (we don't raise the text at all).
+%
+% Since different texts will have different ascenders and descenders, we
+% insert a strut to ensure that all the frames come out with the same total
+% height.
+%
+% Note that the frame will always be drawn in the handout, but the alert
+% colour won't.
+%
+\newlength{\boxheight}
+\settoheight{\boxheight}{Abdfghjklpqty()}
+\newlength{\boxdepth}
+\settodepth{\boxdepth}{Abdfghjklpqty()}
+\newlength{\boxtotalheight}
+\setlength{\boxtotalheight}{\boxheight}
+\addtolength{\boxtotalheight}{\boxdepth}
+
+\newcommand<>{\BoxHighlight}[2][alerted text]{%
+  \setlength{\fboxsep}{1pt}%
+  \alt#3{\raisebox{0pt}[\boxheight][\boxdepth]{\usebeamercolor[fg]{#1}\framebox[\width]{\rule[-\boxdepth]{0pt}{\boxtotalheight}#2}}}{#2}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Title page  
+%
+\defbeamertemplate*{title page}{Otago plain theme}%
+{%
+  \vbox{}%
+  \vfill%
+  \begin{centering}%
+    \usebeamertemplate*{title}\par%
+    \usebeamertemplate*{subtitle}\vskip1em\par%
+    \usebeamertemplate*{author}\vskip1em\par%
+    \usebeamertemplate*{date}\vskip1.5em\par%
+    \usebeamertemplate*{titlegraphic}\par%
+  \end{centering}%
+  \vfill%
+}
+
+\defbeamertemplate*{title}{Otago plain theme}{\inserttitle}
+\defbeamertemplate*{subtitle}{Otago plain theme}{\insertsubtitle}
+\defbeamertemplate*{author}{Otago plain theme}{\insertauthor}
+\defbeamertemplate*{institute}{Otago plain theme}{\insertinstitute}
+\defbeamertemplate*{date}{Otago plain theme}{\insertdate}
+
+\defbeamertemplate*{titlegraphic}{Otago plain theme}{%
+    \hspace*{0.5cm}%
+    \includegraphics[scale=0.2]{Business_School_LS_ID_crop}%
+    \hspace*{0.57cm}%
+    \rule{1pt}{1.482cm}%
+    \hspace*{0.46cm}%
+    \rmfamily\small%
+    \raisebox{0.4cm}{\shortstack[l]{Department of \\ Information Science}}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% We want to use the \part macro to break up the document into parts,
+% but without resetting the section counters and navigation bars. Some
+% of this is keyed off the use of the part counter, so the easiest way
+% to avoid it is to create a new part counter and redefine the \part
+% macro to use that. (This may be an argument for changing the way
+% lecture slides are structured, but later...)
+%
+\newcounter{mypart}
+
+% Argument 1 (optional): the subtitle of the part.
+% Argument 2 (mandatory): the main title of the part.
+\renewcommand{\part}[2][]{%
+  \refstepcounter{mypart}%
+  \def\insertpart{\usebeamercolor[fg]{part name}\usebeamerfont{part name}#2}%
+  \def\insertshortpart{\usebeamercolor[fg]{short part name}\usebeamerfont{short part name}#1}%
+}
+\def\insertpart{\usebeamercolor[fg]{part name}\usebeamerfont{part name}}
+\def\insertshortpart{\usebeamercolor[fg]{short part name}\usebeamerfont{short part name}}
+\def\insertpartnumber{\usebeamercolor[fg]{part number}\usebeamerfont{part number}\arabic{mypart}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Part page
+%
+\defbeamertemplate*{part page}{Otago plain theme}%
+{%
+  \begin{centering}%
+    \vfill\usebeamertemplate*{part name}\par%
+    \vfill\usebeamertemplate*{chapter number}.\usebeamertemplate*{part number}\par%
+    \usebeamertemplate*{short part name}\par\vfill%
+  \end{centering}%
+}
+
+\defbeamertemplate*{part name}{Otago plain theme}{\insertpart}
+\defbeamertemplate*{chapter number}{Otago plain theme}{\insertchapternumber}
+\defbeamertemplate*{part number}{Otago plain theme}{\insertpartnumber}
+\defbeamertemplate*{short part name}{Otago plain theme}{\insertshortpart}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Table of contents
+%
+% \defbeamertemplateparent{sections/subsections in toc}{section in toc,subsection in toc}
+% {}
+% 
+% \defbeamertemplateparent{sections/subsections in toc shaded}{section in toc shaded,subsection in toc shaded}[1][20]
+% {[#1]}
+%
+% (sub-)section in toc: default
+%
+\defbeamertemplate*{section in toc}{Otago plain theme}
+{\inserttocsection\par}
+
+\defbeamertemplate*{subsection in toc}{Otago plain theme}
+{\leavevmode\leftskip=1.5em\inserttocsubsection\par}
+%
+% (sub-)section in toc shaded, default
+%
+\defbeamertemplate*{section in toc shaded}{Otago plain theme}[1][40]
+{\begin{colormixin}{#1!parent.bg}\usebeamertemplate{section in toc}\end{colormixin}\unskip}
+
+\defbeamertemplate*{subsection in toc shaded}{Otago plain theme}[1][40]
+{\begin{colormixin}{#1!parent.bg}\usebeamertemplate{subsection in toc}\end{colormixin}\unskip}
+
+
+
+
+% 
+% %
+% % Item
+% %
+% 
+% \defbeamertemplateparent{items}{itemize items,enumerate items}
+% {}
+% 
+% 
+% % Itemize items
+% 
+% \defbeamertemplateparent{itemize items}{itemize item,itemize subitem,itemize subsubitem}
+% {}
+% 
+% 
+% % Itemize items, default
+% 
+% \defbeamertemplate*{itemize item}{Otago plain theme}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+% \defbeamertemplate*{itemize subitem}{Otago plain theme}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+% \defbeamertemplate*{itemize subsubitem}{Otago plain theme}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+% 
+% 
+% % Enumerate items, default
+% 
+% \defbeamertemplateparent{enumerate items}{enumerate item,enumerate subitem,enumerate subsubitem,enumerate mini}
+% {}
+% 
+% \defbeamertemplate*{enumerate item}{Otago plain theme}{\insertenumlabel.}
+% \defbeamertemplate*{enumerate subitem}{Otago plain theme}{\insertenumlabel.\insertsubenumlabel}
+% \defbeamertemplate*{enumerate subsubitem}{Otago plain theme}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+% \defbeamertemplate*{enumerate mini template}{Otago plain theme}{\insertenumlabel}
+% 
+% 
+% % Description item width
+% 
+% \defbeamertemplate*{description item}{Otago plain theme}{\insertdescriptionitem}
+% 
+% 
+% 
+% % Itemize/Enumerate body
+% 
+% \defbeamertemplate*{itemize/enumerate body begin}{Otago plain theme}{}
+% \defbeamertemplate*{itemize/enumerate body end}{Otago plain theme}{}
+% 
+% \defbeamertemplate*{itemize/enumerate subbody begin}{Otago plain theme}{}
+% \defbeamertemplate*{itemize/enumerate subbody end}{Otago plain theme}{}
+% 
+% \defbeamertemplate*{itemize/enumerate subsubbody begin}{Otago plain theme}{}
+% \defbeamertemplate*{itemize/enumerate subsubbody end}{Otago plain theme}{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Alerted text
+% 
+\defbeamertemplate*{alerted text begin}{Otago plain theme}{\setbeamercolor{local structure}{parent=alerted text}}
+
+
+
+% % Structured text
+% 
+% % empyt defaults
+% 
+% 
+% % Bibliography items
+% 
+% \defbeamertemplate*{bibliography item}{Otago plain theme}
+% {\lower3.5pt\hbox{\hskip2pt\pgfuseimage{beamericonarticle}\hskip1pt}}
+% 
+% \defbeamertemplate*{bibliography entry article}{Otago plain theme}{}
+% \defbeamertemplate*{bibliography entry title}{Otago plain theme}{\par}
+% \defbeamertemplate*{bibliography entry location}{Otago plain theme}{\par}
+% \defbeamertemplate*{bibliography entry note}{Otago plain theme}{\par}
+% 
+% 
+% % Buttons
+% 
+% \newdimen\beamer@dima%
+% \newdimen\beamer@dimb%
+% 
+% \defbeamertemplate*{button}{Otago plain theme}
+% {%
+%   \setbox\beamer@tempbox=\hbox{{\insertbuttontext}}%
+%   \ht\beamer@tempbox=6pt%
+%   \dp\beamer@tempbox=0pt%
+%   \setbox\beamer@tempbox=\vbox{\box\beamer@tempbox\vskip2pt}%
+%   \beamer@tempdim=\wd\beamer@tempbox%
+%   \beamer@dima=\beamer@tempdim\advance\beamer@dima by2.2pt
+%   \beamer@dimb=\beamer@tempdim\advance\beamer@dimb by4pt
+%   \begin{pgfpicture}{-4pt}{0pt}{\the\beamer@tempdim}{8pt}
+%     \color{bg}
+%     \pgfsetlinewidth{0.8pt}
+%     \pgfqmoveto{0}{0}
+%     \pgfqcurveto{-2.2}{0}{-4}{1.8}{-4}{4}
+%     \pgfqcurveto{-4}{6.2}{-2.2}{8}{0}{8}
+%     \pgflineto{\pgfpoint{\the\beamer@tempdim}{8pt}}
+%     \pgfcurveto%
+%     {\pgfpoint{\the\beamer@dima}{8pt}}%
+%     {\pgfpoint{\the\beamer@dimb}{6.2pt}}%
+%     {\pgfpoint{\the\beamer@dimb}{4pt}}
+%     \pgfcurveto%
+%     {\pgfpoint{\the\beamer@dimb}{1.8pt}}%
+%     {\pgfpoint{\the\beamer@dima}{0pt}}%
+%     {\pgfpoint{\the\beamer@tempdim}{0pt}}
+%     \pgfclosepath
+%     \pgffill
+%     \colorlet{bg}{parent.bg}
+%     \usebeamercolor[fg]{button border}
+%     \pgfqmoveto{0}{0}
+%     \pgfqcurveto{-2.2}{0}{-4}{1.8}{-4}{4}
+%     \pgfqcurveto{-4}{6.2}{-2.2}{8}{0}{8}
+%     \pgflineto{\pgfpoint{\the\beamer@tempdim}{8pt}}
+%     \pgfcurveto%
+%     {\pgfpoint{\the\beamer@dima}{8pt}}%
+%     {\pgfpoint{\the\beamer@dimb}{6.2pt}}%
+%     {\pgfpoint{\the\beamer@dimb}{4pt}}
+%     \pgfcurveto%
+%     {\pgfpoint{\the\beamer@dimb}{1.8pt}}%
+%     {\pgfpoint{\the\beamer@dima}{0pt}}%
+%     {\pgfpoint{\the\beamer@tempdim}{0pt}}
+%     \pgfclosepath
+%     \pgfstroke
+%   \end{pgfpicture}%
+%   \hskip-\beamer@tempdim%
+%   \box\beamer@tempbox%
+%   \kern4pt%
+% }
+% 
+% 
+% % Abstract
+% 
+% \defbeamertemplate*{abstract title}{Otago plain theme}
+% {%
+%   \begin{center}%
+%     \abstractname
+%   \end{center}%
+% }
+% 
+% \defbeamertemplate*{abstract begin}{Otago plain theme}
+% {\beamercolorbox[vmode]{abstract}\leftskip2em\rightskip2em plus 1fill\usebeamerfont*{abstract}}
+% 
+% \defbeamertemplate*{abstract end}{Otago plain theme}
+% {\medskip\endbeamercolorbox}
+% 
+% 
+% % Verse
+% 
+% \defbeamertemplate*{verse begin}{Otago plain theme}
+% {\beamercolorbox[vmode]{verse}}
+% 
+% \defbeamertemplate*{verse end}{Otago plain theme}
+% {\endbeamercolorbox}
+% 
+% 
+% % Quotation
+% 
+% \defbeamertemplate*{quotation begin}{Otago plain theme}
+% {\beamercolorbox[vmode]{quotation}}
+% 
+% \defbeamertemplate*{quotation end}{Otago plain theme}
+% {\endbeamercolorbox}
+% 
+% 
+% % Quote
+% 
+% \defbeamertemplate*{quote begin}{Otago plain theme}
+% {\beamercolorbox[vmode]{quote}}
+% 
+% \defbeamertemplate*{quote end}{Otago plain theme}
+% {\endbeamercolorbox}
+% 
+% 
+% % Footnotes
+% 
+% \defbeamertemplate*{footnote}{Otago plain theme}
+% {
+%   \parindent 1em\noindent%
+%   \raggedright
+%   \hbox to 1.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
+% }
+% 
+% 
+% % Captions
+% 
+% \defbeamertemplate*{caption}{Otago plain theme}
+% {%
+%   \raggedright
+%   {%
+%     \usebeamercolor[fg]{caption name}%
+%     \usebeamerfont*{caption name}%
+%     \insertcaptionname:%
+%   }
+%   \insertcaption\par
+% }
+% 
+% 
+% % Blocks
+% 
+% \defbeamertemplateparent{blocks}{block begin,block end,%
+%   block alerted begin,block alerted end,%
+%   block example begin,block example end}
+% {}
+% 
+% \defbeamertemplate*{block begin}{Otago plain theme}
+% {
+%   \par\vskip\medskipamount%
+%   \begin{beamercolorbox}[colsep*=.75ex]{block title}
+%     \usebeamerfont*{block title}\insertblocktitle%
+%   \end{beamercolorbox}%
+%   {\parskip0pt\par}%
+%   \ifbeamercolorempty[bg]{block title}
+%   {}
+%   {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+%   \usebeamerfont{block body}%
+%   \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
+%     \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+% }
+% \defbeamertemplate*{block end}{Otago plain theme}  
+% {\end{beamercolorbox}\vskip\smallskipamount}
+% 
+% \defbeamertemplate*{block alerted begin}{Otago plain theme}
+% {
+%   \par\vskip\medskipamount%
+%   \begin{beamercolorbox}[colsep*=.75ex]{block title alerted}
+%     \usebeamerfont*{block title alerted}\insertblocktitle%
+%   \end{beamercolorbox}%
+%   {\parskip0pt\par}%
+%   \ifbeamercolorempty[bg]{block title alerted}
+%   {}
+%   {\ifbeamercolorempty[bg]{block body alerted}{}{\nointerlineskip\vskip-0.5pt}}%
+%   \usebeamerfont{block body alerted}%
+%   \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body alerted}%
+%     \ifbeamercolorempty[bg]{block body alerted}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+% }
+% 
+% \defbeamertemplate*{block alerted end}{Otago plain theme}
+% {\end{beamercolorbox}\vskip\smallskipamount}
+% 
+% 
+% \defbeamertemplate*{block example begin}{Otago plain theme}
+% {
+%   \par\vskip\medskipamount%
+%   \begin{beamercolorbox}[colsep*=.75ex]{block title example}
+%     \usebeamerfont*{block title example}\insertblocktitle%
+%   \end{beamercolorbox}%
+%   {\parskip0pt\par}%
+%   \ifbeamercolorempty[bg]{block title example}
+%   {}
+%   {\ifbeamercolorempty[bg]{block body example}{}{\nointerlineskip\vskip-0.5pt}}%
+%   \usebeamerfont{block body example}%
+%   \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body example}%
+%     \ifbeamercolorempty[bg]{block body example}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+% }
+% \defbeamertemplate*{block example end}{Otago plain theme}
+% {\end{beamercolorbox}\vskip\smallskipamount}
+% 
+% 
+% 
+% 
+% % Theorems
+% 
+% \defbeamertemplateparent{theorems}{theorem begin,theorem end}
+% {}
+% 
+% \defbeamertemplate*{theorem begin}{Otago plain theme}
+% {%
+%   \begin{\inserttheoremblockenv}
+%   {%
+%     \inserttheoremname
+%     \ifx\inserttheoremaddition\@empty\else\ (\inserttheoremaddition)\fi%
+%   }%
+% }
+% 
+% \defbeamertemplate*{theorem end}{Otago plain theme}
+% {\end{\inserttheoremblockenv}}
+% 
+% 
+% % Proofs
+% \defbeamertemplate*{proof begin}{Otago plain theme}
+% {\begin{block}{\insertproofname}}
+% 
+% \defbeamertemplate*{proof end}{Otago plain theme}
+% {\end{block}}
+% 
+% \defbeamertemplate*{qed symbol}{Otago plain theme}
+% {\openbox}
+% 
+
+
+
+\mode
+<all>
