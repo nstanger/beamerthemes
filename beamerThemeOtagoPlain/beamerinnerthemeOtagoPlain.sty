@@ -98,15 +98,14 @@
 \defbeamertemplate*{date}{Otago plain theme}{\insertdate}
 
 \defbeamertemplate*{titlegraphic}{Otago plain theme}{%
-  \makebox[6cm]{%
-    \hspace*{0.122cm}%
-    \includegraphics[scale=0.2]{UoO_English_Print_Colour.pdf}%
-    \hspace*{0.57cm}%
-    \rule{1pt}{1.166cm}%
-    \hspace*{0.515cm}%
-    \rmfamily\small%
-    \raisebox{0.25cm}{\large\shortstack[l]{School of \\ Computing}}%
-    \hspace*{0.535cm}%
+  \makebox[8cm][c]{%
+    % I would have said -2mm, but -6mm produces the correct alignment???
+    \hspace*{-6mm}%
+    \includegraphics[scale=0.039]{UoO_English_Print_Colour.pdf}%
+    \raisebox{1.5mm}{\rule{0.25pt}{0.85cm}}%
+    \hspace*{1.5mm}%
+    \rmfamily\fontsize{8pt}{8pt}\selectfont%
+    \rlap{\raisebox{2.75em}{School of Computing}}{\raisebox{1.75em}{Te Kura Rorohiko}}%
   }%
 }
 
